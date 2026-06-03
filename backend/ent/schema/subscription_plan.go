@@ -58,6 +58,9 @@ func (SubscriptionPlan) Fields() []ent.Field {
 			Default(true),
 		field.Int("sort_order").
 			Default(0),
+		field.Int64("credits").
+			Default(0).
+			Comment("积分数量：购买此套餐后用户获得的积分总量"),
 		field.Time("created_at").
 			Immutable().
 			Default(time.Now).

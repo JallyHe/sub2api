@@ -112,6 +112,20 @@ func (User) Fields() []ent.Field {
 		// 用户级每分钟请求数上限（0 = 不限制）。仅当所在分组未设置 rpm_limit 时作为兜底生效。
 		field.Int("rpm_limit").
 			Default(0),
+
+		// 积分系统
+		field.Int64("credit_balance").
+			Default(0).
+			Comment("当前积分余额（缓存，权威数据在 credit_ledger）"),
+		field.Time("credit_expires_at").
+			Optional().
+			Nillable().
+			SchemaType(map[string]string{dialect.Postgres: "timestamptz"}).
+			Comment("积分有效期，nil 表示无限期"),
+		field.Int64("credit_plan_id").
+			Optional().
+			Nillable().
+			Comment("当前订阅套餐 ID"),
 	}
 }
 
