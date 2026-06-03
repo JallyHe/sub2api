@@ -2,6 +2,10 @@
   <AppLayout>
     <TablePageLayout>
       <template #actions>
+        <!-- 积分余额卡片 -->
+        <div class="mb-4">
+          <CreditBalanceCard />
+        </div>
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <!-- Total Requests -->
           <div class="card p-4">
@@ -544,6 +548,7 @@ import { useAppStore } from '@/stores/app'
 import { usageAPI, keysAPI } from '@/api'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import TablePageLayout from '@/components/layout/TablePageLayout.vue'
+import CreditBalanceCard from '@/components/CreditBalanceCard.vue'
 import DataTable from '@/components/common/DataTable.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'

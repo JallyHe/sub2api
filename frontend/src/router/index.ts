@@ -175,11 +175,18 @@ const routes: RouteRecordRaw[] = [
     }
   },
 
-  // ==================== User Routes ====================
+  // ==================== Landing Page ====================
   {
     path: '/',
-    redirect: '/home'
+    name: 'Landing',
+    component: () => import('@/views/public/LandingView.vue'),
+    meta: {
+      requiresAuth: false,
+      title: 'Sub2API — AI API 中转订阅平台'
+    }
   },
+
+  // ==================== User Routes ====================
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -615,6 +622,28 @@ const routes: RouteRecordRaw[] = [
   },
 
 
+  // ==================== Credits Admin Routes ====================
+  {
+    path: '/admin/credits/model-rates',
+    name: 'AdminCreditModelRates',
+    component: () => import('@/views/admin/credits/AdminModelRatesView.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+      title: '模型积分费率'
+    }
+  },
+  {
+    path: '/admin/credits/manage',
+    name: 'AdminCreditManage',
+    component: () => import('@/views/admin/credits/AdminCreditPlansView.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+      title: '积分管理'
+    }
+  },
+
   // ==================== Payment Admin Routes ====================
   {
     path: '/admin/orders/dashboard',
@@ -689,7 +718,7 @@ let authInitialized = false
 const navigationLoading = useNavigationLoadingState()
 // 延迟初始化预加载，传入 router 实例
 let routePrefetch: ReturnType<typeof useRoutePrefetch> | null = null
-const BACKEND_MODE_ALLOWED_PATHS = ['/login', '/key-usage', '/setup', '/payment/result', '/payment/airwallex', '/legal']
+const BACKEND_MODE_ALLOWED_PATHS = ['/', '/login', '/key-usage', '/setup', '/payment/result', '/payment/airwallex', '/legal']
 const BACKEND_MODE_CALLBACK_PATHS = [
   '/auth/callback',
   '/auth/linuxdo/callback',
