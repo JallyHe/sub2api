@@ -97,6 +97,18 @@ func RegisterAdminRoutes(
 
 		// 邀请返利（专属用户管理）
 		registerAffiliateRoutes(admin, h)
+
+		// 积分管理
+		registerCreditRoutes(admin, h)
+	}
+}
+
+func registerCreditRoutes(admin *gin.RouterGroup, h *handler.Handlers) {
+	credits := admin.Group("/credits")
+	{
+		credits.GET("/model-rates", h.Admin.Credit.ListModelRates)
+		credits.GET("/users/:id/balance", h.Admin.Credit.GetUserBalance)
+		credits.POST("/grant", h.Admin.Credit.GrantCredits)
 	}
 }
 

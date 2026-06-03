@@ -440,6 +440,16 @@ func (s *PaymentService) doSub(ctx context.Context, o *dbent.PaymentOrder) error
 	if err != nil {
 		return fmt.Errorf("assign subscription: %w", err)
 	}
+	// 积分充值：订阅成功后按套餐积分量充值（非阻塞，失败只记录日志）
+	if s.creditSvc != nil && o.PlanID != nil {
+		if plan, planErr := s.entClient.SubscriptionPlan.Get(ctx, int(*o.PlanID)); planErr == nil && plan.Credits > 0 {
+			orderRef := fmt.Sprintf("order_%d", o.ID)
+			if creditErr := s.creditSvc.CreditUser(ctx, o.UserID, plan.Credits, *o.PlanID, plan.ValidityDays, orderRef); creditErr != nil {
+				slog.Warn("payment_fulfillment: failed to grant credits after subscription",
+					"userID", o.UserID, "planID", *o.PlanID, "credits", plan.Credits, "err", creditErr)
+			}
+		}
+	}
 	return s.markCompleted(ctx, o, "SUBSCRIPTION_SUCCESS")
 }
 

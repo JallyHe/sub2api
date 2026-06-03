@@ -120,5 +120,12 @@ func RegisterUserRoutes(
 			monitors.GET("", h.ChannelMonitor.List)
 			monitors.GET("/:id/status", h.ChannelMonitor.GetStatus)
 		}
+
+		// 积分余额与流水
+		credits := authenticated.Group("/credits")
+		{
+			credits.GET("/balance", h.Credit.GetBalance)
+			credits.GET("/ledger", h.Credit.ListLedger)
+		}
 	}
 }

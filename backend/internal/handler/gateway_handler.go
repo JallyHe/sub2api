@@ -54,6 +54,7 @@ type GatewayHandler struct {
 	maxAccountSwitchesGemini  int
 	cfg                       *config.Config
 	settingService            *service.SettingService
+	creditService             *service.CreditService
 }
 
 // NewGatewayHandler creates a new GatewayHandler
@@ -72,6 +73,7 @@ func NewGatewayHandler(
 	userMsgQueueService *service.UserMessageQueueService,
 	cfg *config.Config,
 	settingService *service.SettingService,
+	creditService *service.CreditService,
 ) *GatewayHandler {
 	pingInterval := time.Duration(0)
 	maxAccountSwitches := 10
@@ -109,6 +111,7 @@ func NewGatewayHandler(
 		maxAccountSwitchesGemini:  maxAccountSwitchesGemini,
 		cfg:                       cfg,
 		settingService:            settingService,
+		creditService:             creditService,
 	}
 }
 
@@ -550,6 +553,34 @@ func (h *GatewayHandler) Messages(c *gin.Context) {
 					).Error("gateway.record_usage_failed", zap.Error(err))
 				}
 			})
+			// 积分扣减：异步执行，不阻塞响应路径
+			if h.creditService != nil {
+				inTok := int64(result.Usage.InputTokens)
+				outTok := int64(result.Usage.OutputTokens)
+				if inTok+outTok > 0 {
+					uid := subject.UserID
+					model := reqModel
+					reqID := result.RequestID
+					go func() {
+						ctx := context.Background()
+						rates, err := h.creditService.GetAllModelRates(ctx)
+						if err != nil {
+							return
+						}
+						rate := service.MatchModelCreditRate(model, rates)
+						if rate == nil {
+							return
+						}
+						delta := service.CalculateCreditDelta(inTok, outTok, rate)
+						if delta > 0 {
+							if err := h.creditService.DeductCredits(ctx, uid, delta, model, reqID); err != nil {
+								logger.L().Warn("gateway.credit_deduction_failed",
+									zap.Int64("user_id", uid), zap.Error(err))
+							}
+						}
+					}()
+				}
+			}
 			return
 		}
 	}
