@@ -802,8 +802,7 @@ router.beforeEach(async (to, _from, next) => {
     }
   }
 
-  // StoryClaw 公开页面：无论后端模式是否开启，始终放行
-  // 宣传首页和用户门户必须对未登录用户可见
+  // ── 1. StoryClaw 公开页面：无论任何模式，始终放行 ──
   if (to.path === '/' || to.path === '/portal') {
     next()
     return
@@ -811,16 +810,14 @@ router.beforeEach(async (to, _from, next) => {
 
   // If route doesn't require auth, allow access
   if (!requiresAuth) {
-    // If already authenticated and trying to access login/register, redirect to appropriate dashboard
+    // ── 2. 已登录用户访问 login/register → 重定向到各自首页 ──
     if (authStore.isAuthenticated && (to.path === '/login' || to.path === '/register')) {
-      // In backend mode, non-admin users should NOT be redirected away from login
-      // (they are blocked from all protected routes, so redirecting would cause a loop)
       if (appStore.backendModeEnabled && !authStore.isAdmin) {
         next()
         return
       }
-      // Admin users go to admin dashboard, regular users go to user dashboard
-      next(authStore.isAdmin ? '/admin/dashboard' : '/dashboard')
+      // 管理员 → 管理后台；普通用户 → 用户门户
+      next(authStore.isAdmin ? '/admin/dashboard' : '/portal')
       return
     }
     // Backend mode: block public pages for unauthenticated users (except login, key-usage, setup)
@@ -845,10 +842,17 @@ router.beforeEach(async (to, _from, next) => {
     return
   }
 
-  // Check admin requirement
+  // ── 3. 权限分层：管理员才能进后台，普通用户只能访问用户门户 ──
   if (requiresAdmin && !authStore.isAdmin) {
-    // User is authenticated but not admin, redirect to user dashboard
-    next('/dashboard')
+    // 非管理员访问 /admin/* → 用户门户
+    next('/portal')
+    return
+  }
+
+  // 普通用户（非管理员）不能访问后台功能页面，重定向到 /portal
+  const ADMIN_ONLY_USER_ROUTES = ['/dashboard', '/keys', '/affiliate', '/available-channels', '/monitor']
+  if (!authStore.isAdmin && ADMIN_ONLY_USER_ROUTES.some(r => to.path === r || to.path.startsWith(r + '/'))) {
+    next('/portal')
     return
   }
 
