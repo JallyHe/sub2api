@@ -802,6 +802,13 @@ router.beforeEach(async (to, _from, next) => {
     }
   }
 
+  // StoryClaw 公开页面：无论后端模式是否开启，始终放行
+  // 宣传首页和用户门户必须对未登录用户可见
+  if (to.path === '/' || to.path === '/portal') {
+    next()
+    return
+  }
+
   // If route doesn't require auth, allow access
   if (!requiresAuth) {
     // If already authenticated and trying to access login/register, redirect to appropriate dashboard
