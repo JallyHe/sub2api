@@ -340,6 +340,48 @@ func (_c *UserCreate) SetNillableRpmLimit(v *int) *UserCreate {
 	return _c
 }
 
+// SetCreditBalance sets the "credit_balance" field.
+func (_c *UserCreate) SetCreditBalance(v int64) *UserCreate {
+	_c.mutation.SetCreditBalance(v)
+	return _c
+}
+
+// SetNillableCreditBalance sets the "credit_balance" field if the given value is not nil.
+func (_c *UserCreate) SetNillableCreditBalance(v *int64) *UserCreate {
+	if v != nil {
+		_c.SetCreditBalance(*v)
+	}
+	return _c
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (_c *UserCreate) SetCreditExpiresAt(v time.Time) *UserCreate {
+	_c.mutation.SetCreditExpiresAt(v)
+	return _c
+}
+
+// SetNillableCreditExpiresAt sets the "credit_expires_at" field if the given value is not nil.
+func (_c *UserCreate) SetNillableCreditExpiresAt(v *time.Time) *UserCreate {
+	if v != nil {
+		_c.SetCreditExpiresAt(*v)
+	}
+	return _c
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (_c *UserCreate) SetCreditPlanID(v int64) *UserCreate {
+	_c.mutation.SetCreditPlanID(v)
+	return _c
+}
+
+// SetNillableCreditPlanID sets the "credit_plan_id" field if the given value is not nil.
+func (_c *UserCreate) SetNillableCreditPlanID(v *int64) *UserCreate {
+	if v != nil {
+		_c.SetCreditPlanID(*v)
+	}
+	return _c
+}
+
 // AddAPIKeyIDs adds the "api_keys" edge to the APIKey entity by IDs.
 func (_c *UserCreate) AddAPIKeyIDs(ids ...int64) *UserCreate {
 	_c.mutation.AddAPIKeyIDs(ids...)
@@ -638,6 +680,10 @@ func (_c *UserCreate) defaults() error {
 		v := user.DefaultRpmLimit
 		_c.mutation.SetRpmLimit(v)
 	}
+	if _, ok := _c.mutation.CreditBalance(); !ok {
+		v := user.DefaultCreditBalance
+		_c.mutation.SetCreditBalance(v)
+	}
 	return nil
 }
 
@@ -723,6 +769,9 @@ func (_c *UserCreate) check() error {
 	}
 	if _, ok := _c.mutation.RpmLimit(); !ok {
 		return &ValidationError{Name: "rpm_limit", err: errors.New(`ent: missing required field "User.rpm_limit"`)}
+	}
+	if _, ok := _c.mutation.CreditBalance(); !ok {
+		return &ValidationError{Name: "credit_balance", err: errors.New(`ent: missing required field "User.credit_balance"`)}
 	}
 	return nil
 }
@@ -842,6 +891,18 @@ func (_c *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.RpmLimit(); ok {
 		_spec.SetField(user.FieldRpmLimit, field.TypeInt, value)
 		_node.RpmLimit = value
+	}
+	if value, ok := _c.mutation.CreditBalance(); ok {
+		_spec.SetField(user.FieldCreditBalance, field.TypeInt64, value)
+		_node.CreditBalance = value
+	}
+	if value, ok := _c.mutation.CreditExpiresAt(); ok {
+		_spec.SetField(user.FieldCreditExpiresAt, field.TypeTime, value)
+		_node.CreditExpiresAt = &value
+	}
+	if value, ok := _c.mutation.CreditPlanID(); ok {
+		_spec.SetField(user.FieldCreditPlanID, field.TypeInt64, value)
+		_node.CreditPlanID = &value
 	}
 	if nodes := _c.mutation.APIKeysIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -1437,6 +1498,66 @@ func (u *UserUpsert) AddRpmLimit(v int) *UserUpsert {
 	return u
 }
 
+// SetCreditBalance sets the "credit_balance" field.
+func (u *UserUpsert) SetCreditBalance(v int64) *UserUpsert {
+	u.Set(user.FieldCreditBalance, v)
+	return u
+}
+
+// UpdateCreditBalance sets the "credit_balance" field to the value that was provided on create.
+func (u *UserUpsert) UpdateCreditBalance() *UserUpsert {
+	u.SetExcluded(user.FieldCreditBalance)
+	return u
+}
+
+// AddCreditBalance adds v to the "credit_balance" field.
+func (u *UserUpsert) AddCreditBalance(v int64) *UserUpsert {
+	u.Add(user.FieldCreditBalance, v)
+	return u
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (u *UserUpsert) SetCreditExpiresAt(v time.Time) *UserUpsert {
+	u.Set(user.FieldCreditExpiresAt, v)
+	return u
+}
+
+// UpdateCreditExpiresAt sets the "credit_expires_at" field to the value that was provided on create.
+func (u *UserUpsert) UpdateCreditExpiresAt() *UserUpsert {
+	u.SetExcluded(user.FieldCreditExpiresAt)
+	return u
+}
+
+// ClearCreditExpiresAt clears the value of the "credit_expires_at" field.
+func (u *UserUpsert) ClearCreditExpiresAt() *UserUpsert {
+	u.SetNull(user.FieldCreditExpiresAt)
+	return u
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (u *UserUpsert) SetCreditPlanID(v int64) *UserUpsert {
+	u.Set(user.FieldCreditPlanID, v)
+	return u
+}
+
+// UpdateCreditPlanID sets the "credit_plan_id" field to the value that was provided on create.
+func (u *UserUpsert) UpdateCreditPlanID() *UserUpsert {
+	u.SetExcluded(user.FieldCreditPlanID)
+	return u
+}
+
+// AddCreditPlanID adds v to the "credit_plan_id" field.
+func (u *UserUpsert) AddCreditPlanID(v int64) *UserUpsert {
+	u.Add(user.FieldCreditPlanID, v)
+	return u
+}
+
+// ClearCreditPlanID clears the value of the "credit_plan_id" field.
+func (u *UserUpsert) ClearCreditPlanID() *UserUpsert {
+	u.SetNull(user.FieldCreditPlanID)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
@@ -1864,6 +1985,76 @@ func (u *UserUpsertOne) AddRpmLimit(v int) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateRpmLimit() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateRpmLimit()
+	})
+}
+
+// SetCreditBalance sets the "credit_balance" field.
+func (u *UserUpsertOne) SetCreditBalance(v int64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditBalance(v)
+	})
+}
+
+// AddCreditBalance adds v to the "credit_balance" field.
+func (u *UserUpsertOne) AddCreditBalance(v int64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.AddCreditBalance(v)
+	})
+}
+
+// UpdateCreditBalance sets the "credit_balance" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateCreditBalance() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditBalance()
+	})
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (u *UserUpsertOne) SetCreditExpiresAt(v time.Time) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditExpiresAt(v)
+	})
+}
+
+// UpdateCreditExpiresAt sets the "credit_expires_at" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateCreditExpiresAt() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditExpiresAt()
+	})
+}
+
+// ClearCreditExpiresAt clears the value of the "credit_expires_at" field.
+func (u *UserUpsertOne) ClearCreditExpiresAt() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearCreditExpiresAt()
+	})
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (u *UserUpsertOne) SetCreditPlanID(v int64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditPlanID(v)
+	})
+}
+
+// AddCreditPlanID adds v to the "credit_plan_id" field.
+func (u *UserUpsertOne) AddCreditPlanID(v int64) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.AddCreditPlanID(v)
+	})
+}
+
+// UpdateCreditPlanID sets the "credit_plan_id" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateCreditPlanID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditPlanID()
+	})
+}
+
+// ClearCreditPlanID clears the value of the "credit_plan_id" field.
+func (u *UserUpsertOne) ClearCreditPlanID() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearCreditPlanID()
 	})
 }
 
@@ -2460,6 +2651,76 @@ func (u *UserUpsertBulk) AddRpmLimit(v int) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateRpmLimit() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateRpmLimit()
+	})
+}
+
+// SetCreditBalance sets the "credit_balance" field.
+func (u *UserUpsertBulk) SetCreditBalance(v int64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditBalance(v)
+	})
+}
+
+// AddCreditBalance adds v to the "credit_balance" field.
+func (u *UserUpsertBulk) AddCreditBalance(v int64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.AddCreditBalance(v)
+	})
+}
+
+// UpdateCreditBalance sets the "credit_balance" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateCreditBalance() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditBalance()
+	})
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (u *UserUpsertBulk) SetCreditExpiresAt(v time.Time) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditExpiresAt(v)
+	})
+}
+
+// UpdateCreditExpiresAt sets the "credit_expires_at" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateCreditExpiresAt() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditExpiresAt()
+	})
+}
+
+// ClearCreditExpiresAt clears the value of the "credit_expires_at" field.
+func (u *UserUpsertBulk) ClearCreditExpiresAt() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearCreditExpiresAt()
+	})
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (u *UserUpsertBulk) SetCreditPlanID(v int64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetCreditPlanID(v)
+	})
+}
+
+// AddCreditPlanID adds v to the "credit_plan_id" field.
+func (u *UserUpsertBulk) AddCreditPlanID(v int64) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.AddCreditPlanID(v)
+	})
+}
+
+// UpdateCreditPlanID sets the "credit_plan_id" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateCreditPlanID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateCreditPlanID()
+	})
+}
+
+// ClearCreditPlanID clears the value of the "credit_plan_id" field.
+func (u *UserUpsertBulk) ClearCreditPlanID() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearCreditPlanID()
 	})
 }
 

@@ -61,6 +61,12 @@ const (
 	FieldTotalRecharged = "total_recharged"
 	// FieldRpmLimit holds the string denoting the rpm_limit field in the database.
 	FieldRpmLimit = "rpm_limit"
+	// FieldCreditBalance holds the string denoting the credit_balance field in the database.
+	FieldCreditBalance = "credit_balance"
+	// FieldCreditExpiresAt holds the string denoting the credit_expires_at field in the database.
+	FieldCreditExpiresAt = "credit_expires_at"
+	// FieldCreditPlanID holds the string denoting the credit_plan_id field in the database.
+	FieldCreditPlanID = "credit_plan_id"
 	// EdgeAPIKeys holds the string denoting the api_keys edge name in mutations.
 	EdgeAPIKeys = "api_keys"
 	// EdgeRedeemCodes holds the string denoting the redeem_codes edge name in mutations.
@@ -215,6 +221,9 @@ var Columns = []string{
 	FieldBalanceNotifyExtraEmails,
 	FieldTotalRecharged,
 	FieldRpmLimit,
+	FieldCreditBalance,
+	FieldCreditExpiresAt,
+	FieldCreditPlanID,
 }
 
 var (
@@ -285,6 +294,8 @@ var (
 	DefaultTotalRecharged float64
 	// DefaultRpmLimit holds the default value on creation for the "rpm_limit" field.
 	DefaultRpmLimit int
+	// DefaultCreditBalance holds the default value on creation for the "credit_balance" field.
+	DefaultCreditBalance int64
 )
 
 // OrderOption defines the ordering options for the User queries.
@@ -408,6 +419,21 @@ func ByTotalRecharged(opts ...sql.OrderTermOption) OrderOption {
 // ByRpmLimit orders the results by the rpm_limit field.
 func ByRpmLimit(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRpmLimit, opts...).ToFunc()
+}
+
+// ByCreditBalance orders the results by the credit_balance field.
+func ByCreditBalance(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreditBalance, opts...).ToFunc()
+}
+
+// ByCreditExpiresAt orders the results by the credit_expires_at field.
+func ByCreditExpiresAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreditExpiresAt, opts...).ToFunc()
+}
+
+// ByCreditPlanID orders the results by the credit_plan_id field.
+func ByCreditPlanID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreditPlanID, opts...).ToFunc()
 }
 
 // ByAPIKeysCount orders the results by api_keys count.

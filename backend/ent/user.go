@@ -63,6 +63,12 @@ type User struct {
 	TotalRecharged float64 `json:"total_recharged,omitempty"`
 	// RpmLimit holds the value of the "rpm_limit" field.
 	RpmLimit int `json:"rpm_limit,omitempty"`
+	// 当前积分余额（缓存，权威数据在 credit_ledger）
+	CreditBalance int64 `json:"credit_balance,omitempty"`
+	// 积分有效期，nil 表示无限期
+	CreditExpiresAt *time.Time `json:"credit_expires_at,omitempty"`
+	// 当前订阅套餐 ID
+	CreditPlanID *int64 `json:"credit_plan_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges        UserEdges `json:"edges"`
@@ -239,11 +245,11 @@ func (*User) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case user.FieldBalance, user.FieldBalanceNotifyThreshold, user.FieldTotalRecharged:
 			values[i] = new(sql.NullFloat64)
-		case user.FieldID, user.FieldConcurrency, user.FieldRpmLimit:
+		case user.FieldID, user.FieldConcurrency, user.FieldRpmLimit, user.FieldCreditBalance, user.FieldCreditPlanID:
 			values[i] = new(sql.NullInt64)
 		case user.FieldEmail, user.FieldPasswordHash, user.FieldRole, user.FieldStatus, user.FieldUsername, user.FieldNotes, user.FieldTotpSecretEncrypted, user.FieldSignupSource, user.FieldBalanceNotifyThresholdType, user.FieldBalanceNotifyExtraEmails:
 			values[i] = new(sql.NullString)
-		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldTotpEnabledAt, user.FieldLastLoginAt, user.FieldLastActiveAt:
+		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldTotpEnabledAt, user.FieldLastLoginAt, user.FieldLastActiveAt, user.FieldCreditExpiresAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -409,6 +415,26 @@ func (_m *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field rpm_limit", values[i])
 			} else if value.Valid {
 				_m.RpmLimit = int(value.Int64)
+			}
+		case user.FieldCreditBalance:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field credit_balance", values[i])
+			} else if value.Valid {
+				_m.CreditBalance = value.Int64
+			}
+		case user.FieldCreditExpiresAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field credit_expires_at", values[i])
+			} else if value.Valid {
+				_m.CreditExpiresAt = new(time.Time)
+				*_m.CreditExpiresAt = value.Time
+			}
+		case user.FieldCreditPlanID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field credit_plan_id", values[i])
+			} else if value.Valid {
+				_m.CreditPlanID = new(int64)
+				*_m.CreditPlanID = value.Int64
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -596,6 +622,19 @@ func (_m *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("rpm_limit=")
 	builder.WriteString(fmt.Sprintf("%v", _m.RpmLimit))
+	builder.WriteString(", ")
+	builder.WriteString("credit_balance=")
+	builder.WriteString(fmt.Sprintf("%v", _m.CreditBalance))
+	builder.WriteString(", ")
+	if v := _m.CreditExpiresAt; v != nil {
+		builder.WriteString("credit_expires_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := _m.CreditPlanID; v != nil {
+		builder.WriteString("credit_plan_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

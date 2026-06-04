@@ -45,10 +45,20 @@ func TestMatchModelCreditRate_NoMatch(t *testing.T) {
 
 func TestCalculateCreditDelta(t *testing.T) {
 	rate := &service.ModelCreditRate{CreditsPer1kIn: 15, CreditsPer1kOut: 75}
-	// (1000/1000)*15 + (500/1000)*75 = 15 + 37 = 52  (integer division)
+	// Integer floor division: (1000/1000)*15 + (500/1000)*75 = 15 + 0 = 15
+	// 500 output tokens < 1k → not charged (partial thousands are free)
 	delta := service.CalculateCreditDelta(1000, 500, rate)
-	if delta != 52 {
-		t.Errorf("expected 52, got %d", delta)
+	if delta != 15 {
+		t.Errorf("expected 15, got %d", delta)
+	}
+}
+
+func TestCalculateCreditDelta_MultipleThousands(t *testing.T) {
+	rate := &service.ModelCreditRate{CreditsPer1kIn: 15, CreditsPer1kOut: 75}
+	// (2000/1000)*15 + (3000/1000)*75 = 30 + 225 = 255
+	delta := service.CalculateCreditDelta(2000, 3000, rate)
+	if delta != 255 {
+		t.Errorf("expected 255, got %d", delta)
 	}
 }
 

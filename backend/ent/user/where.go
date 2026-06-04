@@ -170,6 +170,21 @@ func RpmLimit(v int) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldRpmLimit, v))
 }
 
+// CreditBalance applies equality check predicate on the "credit_balance" field. It's identical to CreditBalanceEQ.
+func CreditBalance(v int64) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditBalance, v))
+}
+
+// CreditExpiresAt applies equality check predicate on the "credit_expires_at" field. It's identical to CreditExpiresAtEQ.
+func CreditExpiresAt(v time.Time) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditExpiresAt, v))
+}
+
+// CreditPlanID applies equality check predicate on the "credit_plan_id" field. It's identical to CreditPlanIDEQ.
+func CreditPlanID(v int64) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditPlanID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldCreatedAt, v))
@@ -1338,6 +1353,146 @@ func RpmLimitLT(v int) predicate.User {
 // RpmLimitLTE applies the LTE predicate on the "rpm_limit" field.
 func RpmLimitLTE(v int) predicate.User {
 	return predicate.User(sql.FieldLTE(FieldRpmLimit, v))
+}
+
+// CreditBalanceEQ applies the EQ predicate on the "credit_balance" field.
+func CreditBalanceEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditBalance, v))
+}
+
+// CreditBalanceNEQ applies the NEQ predicate on the "credit_balance" field.
+func CreditBalanceNEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldCreditBalance, v))
+}
+
+// CreditBalanceIn applies the In predicate on the "credit_balance" field.
+func CreditBalanceIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldIn(FieldCreditBalance, vs...))
+}
+
+// CreditBalanceNotIn applies the NotIn predicate on the "credit_balance" field.
+func CreditBalanceNotIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldCreditBalance, vs...))
+}
+
+// CreditBalanceGT applies the GT predicate on the "credit_balance" field.
+func CreditBalanceGT(v int64) predicate.User {
+	return predicate.User(sql.FieldGT(FieldCreditBalance, v))
+}
+
+// CreditBalanceGTE applies the GTE predicate on the "credit_balance" field.
+func CreditBalanceGTE(v int64) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldCreditBalance, v))
+}
+
+// CreditBalanceLT applies the LT predicate on the "credit_balance" field.
+func CreditBalanceLT(v int64) predicate.User {
+	return predicate.User(sql.FieldLT(FieldCreditBalance, v))
+}
+
+// CreditBalanceLTE applies the LTE predicate on the "credit_balance" field.
+func CreditBalanceLTE(v int64) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldCreditBalance, v))
+}
+
+// CreditExpiresAtEQ applies the EQ predicate on the "credit_expires_at" field.
+func CreditExpiresAtEQ(v time.Time) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtNEQ applies the NEQ predicate on the "credit_expires_at" field.
+func CreditExpiresAtNEQ(v time.Time) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtIn applies the In predicate on the "credit_expires_at" field.
+func CreditExpiresAtIn(vs ...time.Time) predicate.User {
+	return predicate.User(sql.FieldIn(FieldCreditExpiresAt, vs...))
+}
+
+// CreditExpiresAtNotIn applies the NotIn predicate on the "credit_expires_at" field.
+func CreditExpiresAtNotIn(vs ...time.Time) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldCreditExpiresAt, vs...))
+}
+
+// CreditExpiresAtGT applies the GT predicate on the "credit_expires_at" field.
+func CreditExpiresAtGT(v time.Time) predicate.User {
+	return predicate.User(sql.FieldGT(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtGTE applies the GTE predicate on the "credit_expires_at" field.
+func CreditExpiresAtGTE(v time.Time) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtLT applies the LT predicate on the "credit_expires_at" field.
+func CreditExpiresAtLT(v time.Time) predicate.User {
+	return predicate.User(sql.FieldLT(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtLTE applies the LTE predicate on the "credit_expires_at" field.
+func CreditExpiresAtLTE(v time.Time) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldCreditExpiresAt, v))
+}
+
+// CreditExpiresAtIsNil applies the IsNil predicate on the "credit_expires_at" field.
+func CreditExpiresAtIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldCreditExpiresAt))
+}
+
+// CreditExpiresAtNotNil applies the NotNil predicate on the "credit_expires_at" field.
+func CreditExpiresAtNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldCreditExpiresAt))
+}
+
+// CreditPlanIDEQ applies the EQ predicate on the "credit_plan_id" field.
+func CreditPlanIDEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDNEQ applies the NEQ predicate on the "credit_plan_id" field.
+func CreditPlanIDNEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDIn applies the In predicate on the "credit_plan_id" field.
+func CreditPlanIDIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldIn(FieldCreditPlanID, vs...))
+}
+
+// CreditPlanIDNotIn applies the NotIn predicate on the "credit_plan_id" field.
+func CreditPlanIDNotIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldCreditPlanID, vs...))
+}
+
+// CreditPlanIDGT applies the GT predicate on the "credit_plan_id" field.
+func CreditPlanIDGT(v int64) predicate.User {
+	return predicate.User(sql.FieldGT(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDGTE applies the GTE predicate on the "credit_plan_id" field.
+func CreditPlanIDGTE(v int64) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDLT applies the LT predicate on the "credit_plan_id" field.
+func CreditPlanIDLT(v int64) predicate.User {
+	return predicate.User(sql.FieldLT(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDLTE applies the LTE predicate on the "credit_plan_id" field.
+func CreditPlanIDLTE(v int64) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldCreditPlanID, v))
+}
+
+// CreditPlanIDIsNil applies the IsNil predicate on the "credit_plan_id" field.
+func CreditPlanIDIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldCreditPlanID))
+}
+
+// CreditPlanIDNotNil applies the NotNil predicate on the "credit_plan_id" field.
+func CreditPlanIDNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldCreditPlanID))
 }
 
 // HasAPIKeys applies the HasEdge predicate on the "api_keys" edge.

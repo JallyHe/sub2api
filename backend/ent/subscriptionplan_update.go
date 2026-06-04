@@ -223,6 +223,27 @@ func (_u *SubscriptionPlanUpdate) AddSortOrder(v int) *SubscriptionPlanUpdate {
 	return _u
 }
 
+// SetCredits sets the "credits" field.
+func (_u *SubscriptionPlanUpdate) SetCredits(v int64) *SubscriptionPlanUpdate {
+	_u.mutation.ResetCredits()
+	_u.mutation.SetCredits(v)
+	return _u
+}
+
+// SetNillableCredits sets the "credits" field if the given value is not nil.
+func (_u *SubscriptionPlanUpdate) SetNillableCredits(v *int64) *SubscriptionPlanUpdate {
+	if v != nil {
+		_u.SetCredits(*v)
+	}
+	return _u
+}
+
+// AddCredits adds value to the "credits" field.
+func (_u *SubscriptionPlanUpdate) AddCredits(v int64) *SubscriptionPlanUpdate {
+	_u.mutation.AddCredits(v)
+	return _u
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (_u *SubscriptionPlanUpdate) SetUpdatedAt(v time.Time) *SubscriptionPlanUpdate {
 	_u.mutation.SetUpdatedAt(v)
@@ -352,6 +373,12 @@ func (_u *SubscriptionPlanUpdate) sqlSave(ctx context.Context) (_node int, err e
 	}
 	if value, ok := _u.mutation.AddedSortOrder(); ok {
 		_spec.AddField(subscriptionplan.FieldSortOrder, field.TypeInt, value)
+	}
+	if value, ok := _u.mutation.Credits(); ok {
+		_spec.SetField(subscriptionplan.FieldCredits, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCredits(); ok {
+		_spec.AddField(subscriptionplan.FieldCredits, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(subscriptionplan.FieldUpdatedAt, field.TypeTime, value)
@@ -571,6 +598,27 @@ func (_u *SubscriptionPlanUpdateOne) AddSortOrder(v int) *SubscriptionPlanUpdate
 	return _u
 }
 
+// SetCredits sets the "credits" field.
+func (_u *SubscriptionPlanUpdateOne) SetCredits(v int64) *SubscriptionPlanUpdateOne {
+	_u.mutation.ResetCredits()
+	_u.mutation.SetCredits(v)
+	return _u
+}
+
+// SetNillableCredits sets the "credits" field if the given value is not nil.
+func (_u *SubscriptionPlanUpdateOne) SetNillableCredits(v *int64) *SubscriptionPlanUpdateOne {
+	if v != nil {
+		_u.SetCredits(*v)
+	}
+	return _u
+}
+
+// AddCredits adds value to the "credits" field.
+func (_u *SubscriptionPlanUpdateOne) AddCredits(v int64) *SubscriptionPlanUpdateOne {
+	_u.mutation.AddCredits(v)
+	return _u
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (_u *SubscriptionPlanUpdateOne) SetUpdatedAt(v time.Time) *SubscriptionPlanUpdateOne {
 	_u.mutation.SetUpdatedAt(v)
@@ -730,6 +778,12 @@ func (_u *SubscriptionPlanUpdateOne) sqlSave(ctx context.Context) (_node *Subscr
 	}
 	if value, ok := _u.mutation.AddedSortOrder(); ok {
 		_spec.AddField(subscriptionplan.FieldSortOrder, field.TypeInt, value)
+	}
+	if value, ok := _u.mutation.Credits(); ok {
+		_spec.SetField(subscriptionplan.FieldCredits, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCredits(); ok {
+		_spec.AddField(subscriptionplan.FieldCredits, field.TypeInt64, value)
 	}
 	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(subscriptionplan.FieldUpdatedAt, field.TypeTime, value)

@@ -85,7 +85,7 @@ func (s *CreditService) GetBalance(ctx context.Context, userID int64) (*CreditBa
 	key := s.cacheKey(userID)
 	cached, err := s.redis.Get(ctx, key).Int64()
 	if err == nil {
-		u, dbErr := s.db.User.Get(ctx, int(userID))
+		u, dbErr := s.db.User.Get(ctx, userID)
 		if dbErr != nil {
 			return nil, dbErr
 		}
@@ -96,7 +96,7 @@ func (s *CreditService) GetBalance(ctx context.Context, userID int64) (*CreditBa
 		}, nil
 	}
 
-	u, err := s.db.User.Get(ctx, int(userID))
+	u, err := s.db.User.Get(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (s *CreditService) HasSufficientCredits(ctx context.Context, userID int64) 
 	bal, err := s.redis.Get(ctx, key).Int64()
 	if err == redis.Nil {
 		u, dbErr := s.db.User.Query().
-			Where(entuser.ID(int(userID))).
+			Where(entuser.ID(userID)).
 			Select(entuser.FieldCreditBalance, entuser.FieldCreditExpiresAt).
 			Only(ctx)
 		if dbErr != nil {
@@ -136,7 +136,7 @@ func (s *CreditService) DeductCredits(ctx context.Context, userID, delta int64, 
 	if delta <= 0 {
 		return nil
 	}
-	u, err := s.db.User.Get(ctx, int(userID))
+	u, err := s.db.User.Get(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -144,7 +144,7 @@ func (s *CreditService) DeductCredits(ctx context.Context, userID, delta int64, 
 	if newBalance < 0 {
 		newBalance = 0
 	}
-	if err := s.db.User.UpdateOneID(int(userID)).
+	if err := s.db.User.UpdateOneID(userID).
 		SetCreditBalance(newBalance).
 		Exec(ctx); err != nil {
 		return err
@@ -167,13 +167,13 @@ func (s *CreditService) DeductCredits(ctx context.Context, userID, delta int64, 
 
 // CreditUser adds credits to a user after a successful purchase and sets expiry.
 func (s *CreditService) CreditUser(ctx context.Context, userID, credits, planID int64, validityDays int, orderID string) error {
-	u, err := s.db.User.Get(ctx, int(userID))
+	u, err := s.db.User.Get(ctx, userID)
 	if err != nil {
 		return err
 	}
 	newBalance := u.CreditBalance + credits
 	expiresAt := time.Now().AddDate(0, 0, validityDays)
-	if err := s.db.User.UpdateOneID(int(userID)).
+	if err := s.db.User.UpdateOneID(userID).
 		SetCreditBalance(newBalance).
 		SetCreditExpiresAt(expiresAt).
 		SetCreditPlanID(planID).
@@ -195,12 +195,12 @@ func (s *CreditService) CreditUser(ctx context.Context, userID, credits, planID 
 
 // AdminGrantCredits adds credits manually (admin action, reason = "admin_grant").
 func (s *CreditService) AdminGrantCredits(ctx context.Context, userID, credits int64, notes string) error {
-	u, err := s.db.User.Get(ctx, int(userID))
+	u, err := s.db.User.Get(ctx, userID)
 	if err != nil {
 		return err
 	}
 	newBalance := u.CreditBalance + credits
-	if err := s.db.User.UpdateOneID(int(userID)).
+	if err := s.db.User.UpdateOneID(userID).
 		SetCreditBalance(newBalance).
 		Exec(ctx); err != nil {
 		return err

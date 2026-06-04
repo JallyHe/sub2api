@@ -411,6 +411,74 @@ func (_u *UserUpdate) AddRpmLimit(v int) *UserUpdate {
 	return _u
 }
 
+// SetCreditBalance sets the "credit_balance" field.
+func (_u *UserUpdate) SetCreditBalance(v int64) *UserUpdate {
+	_u.mutation.ResetCreditBalance()
+	_u.mutation.SetCreditBalance(v)
+	return _u
+}
+
+// SetNillableCreditBalance sets the "credit_balance" field if the given value is not nil.
+func (_u *UserUpdate) SetNillableCreditBalance(v *int64) *UserUpdate {
+	if v != nil {
+		_u.SetCreditBalance(*v)
+	}
+	return _u
+}
+
+// AddCreditBalance adds value to the "credit_balance" field.
+func (_u *UserUpdate) AddCreditBalance(v int64) *UserUpdate {
+	_u.mutation.AddCreditBalance(v)
+	return _u
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (_u *UserUpdate) SetCreditExpiresAt(v time.Time) *UserUpdate {
+	_u.mutation.SetCreditExpiresAt(v)
+	return _u
+}
+
+// SetNillableCreditExpiresAt sets the "credit_expires_at" field if the given value is not nil.
+func (_u *UserUpdate) SetNillableCreditExpiresAt(v *time.Time) *UserUpdate {
+	if v != nil {
+		_u.SetCreditExpiresAt(*v)
+	}
+	return _u
+}
+
+// ClearCreditExpiresAt clears the value of the "credit_expires_at" field.
+func (_u *UserUpdate) ClearCreditExpiresAt() *UserUpdate {
+	_u.mutation.ClearCreditExpiresAt()
+	return _u
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (_u *UserUpdate) SetCreditPlanID(v int64) *UserUpdate {
+	_u.mutation.ResetCreditPlanID()
+	_u.mutation.SetCreditPlanID(v)
+	return _u
+}
+
+// SetNillableCreditPlanID sets the "credit_plan_id" field if the given value is not nil.
+func (_u *UserUpdate) SetNillableCreditPlanID(v *int64) *UserUpdate {
+	if v != nil {
+		_u.SetCreditPlanID(*v)
+	}
+	return _u
+}
+
+// AddCreditPlanID adds value to the "credit_plan_id" field.
+func (_u *UserUpdate) AddCreditPlanID(v int64) *UserUpdate {
+	_u.mutation.AddCreditPlanID(v)
+	return _u
+}
+
+// ClearCreditPlanID clears the value of the "credit_plan_id" field.
+func (_u *UserUpdate) ClearCreditPlanID() *UserUpdate {
+	_u.mutation.ClearCreditPlanID()
+	return _u
+}
+
 // AddAPIKeyIDs adds the "api_keys" edge to the APIKey entity by IDs.
 func (_u *UserUpdate) AddAPIKeyIDs(ids ...int64) *UserUpdate {
 	_u.mutation.AddAPIKeyIDs(ids...)
@@ -1071,6 +1139,27 @@ func (_u *UserUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.AddedRpmLimit(); ok {
 		_spec.AddField(user.FieldRpmLimit, field.TypeInt, value)
+	}
+	if value, ok := _u.mutation.CreditBalance(); ok {
+		_spec.SetField(user.FieldCreditBalance, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCreditBalance(); ok {
+		_spec.AddField(user.FieldCreditBalance, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.CreditExpiresAt(); ok {
+		_spec.SetField(user.FieldCreditExpiresAt, field.TypeTime, value)
+	}
+	if _u.mutation.CreditExpiresAtCleared() {
+		_spec.ClearField(user.FieldCreditExpiresAt, field.TypeTime)
+	}
+	if value, ok := _u.mutation.CreditPlanID(); ok {
+		_spec.SetField(user.FieldCreditPlanID, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCreditPlanID(); ok {
+		_spec.AddField(user.FieldCreditPlanID, field.TypeInt64, value)
+	}
+	if _u.mutation.CreditPlanIDCleared() {
+		_spec.ClearField(user.FieldCreditPlanID, field.TypeInt64)
 	}
 	if _u.mutation.APIKeysCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -2060,6 +2149,74 @@ func (_u *UserUpdateOne) AddRpmLimit(v int) *UserUpdateOne {
 	return _u
 }
 
+// SetCreditBalance sets the "credit_balance" field.
+func (_u *UserUpdateOne) SetCreditBalance(v int64) *UserUpdateOne {
+	_u.mutation.ResetCreditBalance()
+	_u.mutation.SetCreditBalance(v)
+	return _u
+}
+
+// SetNillableCreditBalance sets the "credit_balance" field if the given value is not nil.
+func (_u *UserUpdateOne) SetNillableCreditBalance(v *int64) *UserUpdateOne {
+	if v != nil {
+		_u.SetCreditBalance(*v)
+	}
+	return _u
+}
+
+// AddCreditBalance adds value to the "credit_balance" field.
+func (_u *UserUpdateOne) AddCreditBalance(v int64) *UserUpdateOne {
+	_u.mutation.AddCreditBalance(v)
+	return _u
+}
+
+// SetCreditExpiresAt sets the "credit_expires_at" field.
+func (_u *UserUpdateOne) SetCreditExpiresAt(v time.Time) *UserUpdateOne {
+	_u.mutation.SetCreditExpiresAt(v)
+	return _u
+}
+
+// SetNillableCreditExpiresAt sets the "credit_expires_at" field if the given value is not nil.
+func (_u *UserUpdateOne) SetNillableCreditExpiresAt(v *time.Time) *UserUpdateOne {
+	if v != nil {
+		_u.SetCreditExpiresAt(*v)
+	}
+	return _u
+}
+
+// ClearCreditExpiresAt clears the value of the "credit_expires_at" field.
+func (_u *UserUpdateOne) ClearCreditExpiresAt() *UserUpdateOne {
+	_u.mutation.ClearCreditExpiresAt()
+	return _u
+}
+
+// SetCreditPlanID sets the "credit_plan_id" field.
+func (_u *UserUpdateOne) SetCreditPlanID(v int64) *UserUpdateOne {
+	_u.mutation.ResetCreditPlanID()
+	_u.mutation.SetCreditPlanID(v)
+	return _u
+}
+
+// SetNillableCreditPlanID sets the "credit_plan_id" field if the given value is not nil.
+func (_u *UserUpdateOne) SetNillableCreditPlanID(v *int64) *UserUpdateOne {
+	if v != nil {
+		_u.SetCreditPlanID(*v)
+	}
+	return _u
+}
+
+// AddCreditPlanID adds value to the "credit_plan_id" field.
+func (_u *UserUpdateOne) AddCreditPlanID(v int64) *UserUpdateOne {
+	_u.mutation.AddCreditPlanID(v)
+	return _u
+}
+
+// ClearCreditPlanID clears the value of the "credit_plan_id" field.
+func (_u *UserUpdateOne) ClearCreditPlanID() *UserUpdateOne {
+	_u.mutation.ClearCreditPlanID()
+	return _u
+}
+
 // AddAPIKeyIDs adds the "api_keys" edge to the APIKey entity by IDs.
 func (_u *UserUpdateOne) AddAPIKeyIDs(ids ...int64) *UserUpdateOne {
 	_u.mutation.AddAPIKeyIDs(ids...)
@@ -2750,6 +2907,27 @@ func (_u *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 	}
 	if value, ok := _u.mutation.AddedRpmLimit(); ok {
 		_spec.AddField(user.FieldRpmLimit, field.TypeInt, value)
+	}
+	if value, ok := _u.mutation.CreditBalance(); ok {
+		_spec.SetField(user.FieldCreditBalance, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCreditBalance(); ok {
+		_spec.AddField(user.FieldCreditBalance, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.CreditExpiresAt(); ok {
+		_spec.SetField(user.FieldCreditExpiresAt, field.TypeTime, value)
+	}
+	if _u.mutation.CreditExpiresAtCleared() {
+		_spec.ClearField(user.FieldCreditExpiresAt, field.TypeTime)
+	}
+	if value, ok := _u.mutation.CreditPlanID(); ok {
+		_spec.SetField(user.FieldCreditPlanID, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedCreditPlanID(); ok {
+		_spec.AddField(user.FieldCreditPlanID, field.TypeInt64, value)
+	}
+	if _u.mutation.CreditPlanIDCleared() {
+		_spec.ClearField(user.FieldCreditPlanID, field.TypeInt64)
 	}
 	if _u.mutation.APIKeysCleared() {
 		edge := &sqlgraph.EdgeSpec{

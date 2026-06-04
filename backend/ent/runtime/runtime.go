@@ -16,10 +16,12 @@ import (
 	"github.com/Wei-Shaw/sub2api/ent/channelmonitordailyrollup"
 	"github.com/Wei-Shaw/sub2api/ent/channelmonitorhistory"
 	"github.com/Wei-Shaw/sub2api/ent/channelmonitorrequesttemplate"
+	"github.com/Wei-Shaw/sub2api/ent/creditledger"
 	"github.com/Wei-Shaw/sub2api/ent/errorpassthroughrule"
 	"github.com/Wei-Shaw/sub2api/ent/group"
 	"github.com/Wei-Shaw/sub2api/ent/idempotencyrecord"
 	"github.com/Wei-Shaw/sub2api/ent/identityadoptiondecision"
+	"github.com/Wei-Shaw/sub2api/ent/modelcreditrate"
 	"github.com/Wei-Shaw/sub2api/ent/paymentauditlog"
 	"github.com/Wei-Shaw/sub2api/ent/paymentorder"
 	"github.com/Wei-Shaw/sub2api/ent/paymentproviderinstance"
@@ -690,6 +692,38 @@ func init() {
 	channelmonitorrequesttemplate.DefaultBodyOverrideMode = channelmonitorrequesttemplateDescBodyOverrideMode.Default.(string)
 	// channelmonitorrequesttemplate.BodyOverrideModeValidator is a validator for the "body_override_mode" field. It is called by the builders before save.
 	channelmonitorrequesttemplate.BodyOverrideModeValidator = channelmonitorrequesttemplateDescBodyOverrideMode.Validators[0].(func(string) error)
+	creditledgerFields := schema.CreditLedger{}.Fields()
+	_ = creditledgerFields
+	// creditledgerDescReason is the schema descriptor for reason field.
+	creditledgerDescReason := creditledgerFields[2].Descriptor()
+	// creditledger.ReasonValidator is a validator for the "reason" field. It is called by the builders before save.
+	creditledger.ReasonValidator = func() func(string) error {
+		validators := creditledgerDescReason.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(reason string) error {
+			for _, fn := range fns {
+				if err := fn(reason); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// creditledgerDescRefID is the schema descriptor for ref_id field.
+	creditledgerDescRefID := creditledgerFields[3].Descriptor()
+	// creditledger.RefIDValidator is a validator for the "ref_id" field. It is called by the builders before save.
+	creditledger.RefIDValidator = creditledgerDescRefID.Validators[0].(func(string) error)
+	// creditledgerDescModel is the schema descriptor for model field.
+	creditledgerDescModel := creditledgerFields[5].Descriptor()
+	// creditledger.ModelValidator is a validator for the "model" field. It is called by the builders before save.
+	creditledger.ModelValidator = creditledgerDescModel.Validators[0].(func(string) error)
+	// creditledgerDescCreatedAt is the schema descriptor for created_at field.
+	creditledgerDescCreatedAt := creditledgerFields[6].Descriptor()
+	// creditledger.DefaultCreatedAt holds the default value on creation for the created_at field.
+	creditledger.DefaultCreatedAt = creditledgerDescCreatedAt.Default.(func() time.Time)
 	errorpassthroughruleMixin := schema.ErrorPassthroughRule{}.Mixin()
 	errorpassthroughruleMixinFields0 := errorpassthroughruleMixin[0].Fields()
 	_ = errorpassthroughruleMixinFields0
@@ -940,6 +974,48 @@ func init() {
 	identityadoptiondecisionDescDecidedAt := identityadoptiondecisionFields[4].Descriptor()
 	// identityadoptiondecision.DefaultDecidedAt holds the default value on creation for the decided_at field.
 	identityadoptiondecision.DefaultDecidedAt = identityadoptiondecisionDescDecidedAt.Default.(func() time.Time)
+	modelcreditrateFields := schema.ModelCreditRate{}.Fields()
+	_ = modelcreditrateFields
+	// modelcreditrateDescModelPattern is the schema descriptor for model_pattern field.
+	modelcreditrateDescModelPattern := modelcreditrateFields[0].Descriptor()
+	// modelcreditrate.ModelPatternValidator is a validator for the "model_pattern" field. It is called by the builders before save.
+	modelcreditrate.ModelPatternValidator = func() func(string) error {
+		validators := modelcreditrateDescModelPattern.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(model_pattern string) error {
+			for _, fn := range fns {
+				if err := fn(model_pattern); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// modelcreditrateDescCreditsPer1kTokensInput is the schema descriptor for credits_per_1k_tokens_input field.
+	modelcreditrateDescCreditsPer1kTokensInput := modelcreditrateFields[1].Descriptor()
+	// modelcreditrate.DefaultCreditsPer1kTokensInput holds the default value on creation for the credits_per_1k_tokens_input field.
+	modelcreditrate.DefaultCreditsPer1kTokensInput = modelcreditrateDescCreditsPer1kTokensInput.Default.(int64)
+	// modelcreditrateDescCreditsPer1kTokensOutput is the schema descriptor for credits_per_1k_tokens_output field.
+	modelcreditrateDescCreditsPer1kTokensOutput := modelcreditrateFields[2].Descriptor()
+	// modelcreditrate.DefaultCreditsPer1kTokensOutput holds the default value on creation for the credits_per_1k_tokens_output field.
+	modelcreditrate.DefaultCreditsPer1kTokensOutput = modelcreditrateDescCreditsPer1kTokensOutput.Default.(int64)
+	// modelcreditrateDescPriority is the schema descriptor for priority field.
+	modelcreditrateDescPriority := modelcreditrateFields[3].Descriptor()
+	// modelcreditrate.DefaultPriority holds the default value on creation for the priority field.
+	modelcreditrate.DefaultPriority = modelcreditrateDescPriority.Default.(int)
+	// modelcreditrateDescCreatedAt is the schema descriptor for created_at field.
+	modelcreditrateDescCreatedAt := modelcreditrateFields[4].Descriptor()
+	// modelcreditrate.DefaultCreatedAt holds the default value on creation for the created_at field.
+	modelcreditrate.DefaultCreatedAt = modelcreditrateDescCreatedAt.Default.(func() time.Time)
+	// modelcreditrateDescUpdatedAt is the schema descriptor for updated_at field.
+	modelcreditrateDescUpdatedAt := modelcreditrateFields[5].Descriptor()
+	// modelcreditrate.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	modelcreditrate.DefaultUpdatedAt = modelcreditrateDescUpdatedAt.Default.(func() time.Time)
+	// modelcreditrate.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	modelcreditrate.UpdateDefaultUpdatedAt = modelcreditrateDescUpdatedAt.UpdateDefault.(func() time.Time)
 	paymentauditlogFields := schema.PaymentAuditLog{}.Fields()
 	_ = paymentauditlogFields
 	// paymentauditlogDescOrderID is the schema descriptor for order_id field.
@@ -1521,12 +1597,16 @@ func init() {
 	subscriptionplanDescSortOrder := subscriptionplanFields[10].Descriptor()
 	// subscriptionplan.DefaultSortOrder holds the default value on creation for the sort_order field.
 	subscriptionplan.DefaultSortOrder = subscriptionplanDescSortOrder.Default.(int)
+	// subscriptionplanDescCredits is the schema descriptor for credits field.
+	subscriptionplanDescCredits := subscriptionplanFields[11].Descriptor()
+	// subscriptionplan.DefaultCredits holds the default value on creation for the credits field.
+	subscriptionplan.DefaultCredits = subscriptionplanDescCredits.Default.(int64)
 	// subscriptionplanDescCreatedAt is the schema descriptor for created_at field.
-	subscriptionplanDescCreatedAt := subscriptionplanFields[11].Descriptor()
+	subscriptionplanDescCreatedAt := subscriptionplanFields[12].Descriptor()
 	// subscriptionplan.DefaultCreatedAt holds the default value on creation for the created_at field.
 	subscriptionplan.DefaultCreatedAt = subscriptionplanDescCreatedAt.Default.(func() time.Time)
 	// subscriptionplanDescUpdatedAt is the schema descriptor for updated_at field.
-	subscriptionplanDescUpdatedAt := subscriptionplanFields[12].Descriptor()
+	subscriptionplanDescUpdatedAt := subscriptionplanFields[13].Descriptor()
 	// subscriptionplan.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	subscriptionplan.DefaultUpdatedAt = subscriptionplanDescUpdatedAt.Default.(func() time.Time)
 	// subscriptionplan.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
@@ -1874,6 +1954,10 @@ func init() {
 	userDescRpmLimit := userFields[19].Descriptor()
 	// user.DefaultRpmLimit holds the default value on creation for the rpm_limit field.
 	user.DefaultRpmLimit = userDescRpmLimit.Default.(int)
+	// userDescCreditBalance is the schema descriptor for credit_balance field.
+	userDescCreditBalance := userFields[20].Descriptor()
+	// user.DefaultCreditBalance holds the default value on creation for the credit_balance field.
+	user.DefaultCreditBalance = userDescCreditBalance.Default.(int64)
 	userallowedgroupFields := schema.UserAllowedGroup{}.Fields()
 	_ = userallowedgroupFields
 	// userallowedgroupDescCreatedAt is the schema descriptor for created_at field.

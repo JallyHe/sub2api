@@ -152,6 +152,20 @@ func (_c *SubscriptionPlanCreate) SetNillableSortOrder(v *int) *SubscriptionPlan
 	return _c
 }
 
+// SetCredits sets the "credits" field.
+func (_c *SubscriptionPlanCreate) SetCredits(v int64) *SubscriptionPlanCreate {
+	_c.mutation.SetCredits(v)
+	return _c
+}
+
+// SetNillableCredits sets the "credits" field if the given value is not nil.
+func (_c *SubscriptionPlanCreate) SetNillableCredits(v *int64) *SubscriptionPlanCreate {
+	if v != nil {
+		_c.SetCredits(*v)
+	}
+	return _c
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_c *SubscriptionPlanCreate) SetCreatedAt(v time.Time) *SubscriptionPlanCreate {
 	_c.mutation.SetCreatedAt(v)
@@ -243,6 +257,10 @@ func (_c *SubscriptionPlanCreate) defaults() {
 		v := subscriptionplan.DefaultSortOrder
 		_c.mutation.SetSortOrder(v)
 	}
+	if _, ok := _c.mutation.Credits(); !ok {
+		v := subscriptionplan.DefaultCredits
+		_c.mutation.SetCredits(v)
+	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := subscriptionplan.DefaultCreatedAt()
 		_c.mutation.SetCreatedAt(v)
@@ -299,6 +317,9 @@ func (_c *SubscriptionPlanCreate) check() error {
 	}
 	if _, ok := _c.mutation.SortOrder(); !ok {
 		return &ValidationError{Name: "sort_order", err: errors.New(`ent: missing required field "SubscriptionPlan.sort_order"`)}
+	}
+	if _, ok := _c.mutation.Credits(); !ok {
+		return &ValidationError{Name: "credits", err: errors.New(`ent: missing required field "SubscriptionPlan.credits"`)}
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "SubscriptionPlan.created_at"`)}
@@ -376,6 +397,10 @@ func (_c *SubscriptionPlanCreate) createSpec() (*SubscriptionPlan, *sqlgraph.Cre
 	if value, ok := _c.mutation.SortOrder(); ok {
 		_spec.SetField(subscriptionplan.FieldSortOrder, field.TypeInt, value)
 		_node.SortOrder = value
+	}
+	if value, ok := _c.mutation.Credits(); ok {
+		_spec.SetField(subscriptionplan.FieldCredits, field.TypeInt64, value)
+		_node.Credits = value
 	}
 	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(subscriptionplan.FieldCreatedAt, field.TypeTime, value)
@@ -602,6 +627,24 @@ func (u *SubscriptionPlanUpsert) UpdateSortOrder() *SubscriptionPlanUpsert {
 // AddSortOrder adds v to the "sort_order" field.
 func (u *SubscriptionPlanUpsert) AddSortOrder(v int) *SubscriptionPlanUpsert {
 	u.Add(subscriptionplan.FieldSortOrder, v)
+	return u
+}
+
+// SetCredits sets the "credits" field.
+func (u *SubscriptionPlanUpsert) SetCredits(v int64) *SubscriptionPlanUpsert {
+	u.Set(subscriptionplan.FieldCredits, v)
+	return u
+}
+
+// UpdateCredits sets the "credits" field to the value that was provided on create.
+func (u *SubscriptionPlanUpsert) UpdateCredits() *SubscriptionPlanUpsert {
+	u.SetExcluded(subscriptionplan.FieldCredits)
+	return u
+}
+
+// AddCredits adds v to the "credits" field.
+func (u *SubscriptionPlanUpsert) AddCredits(v int64) *SubscriptionPlanUpsert {
+	u.Add(subscriptionplan.FieldCredits, v)
 	return u
 }
 
@@ -855,6 +898,27 @@ func (u *SubscriptionPlanUpsertOne) AddSortOrder(v int) *SubscriptionPlanUpsertO
 func (u *SubscriptionPlanUpsertOne) UpdateSortOrder() *SubscriptionPlanUpsertOne {
 	return u.Update(func(s *SubscriptionPlanUpsert) {
 		s.UpdateSortOrder()
+	})
+}
+
+// SetCredits sets the "credits" field.
+func (u *SubscriptionPlanUpsertOne) SetCredits(v int64) *SubscriptionPlanUpsertOne {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.SetCredits(v)
+	})
+}
+
+// AddCredits adds v to the "credits" field.
+func (u *SubscriptionPlanUpsertOne) AddCredits(v int64) *SubscriptionPlanUpsertOne {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.AddCredits(v)
+	})
+}
+
+// UpdateCredits sets the "credits" field to the value that was provided on create.
+func (u *SubscriptionPlanUpsertOne) UpdateCredits() *SubscriptionPlanUpsertOne {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.UpdateCredits()
 	})
 }
 
@@ -1276,6 +1340,27 @@ func (u *SubscriptionPlanUpsertBulk) AddSortOrder(v int) *SubscriptionPlanUpsert
 func (u *SubscriptionPlanUpsertBulk) UpdateSortOrder() *SubscriptionPlanUpsertBulk {
 	return u.Update(func(s *SubscriptionPlanUpsert) {
 		s.UpdateSortOrder()
+	})
+}
+
+// SetCredits sets the "credits" field.
+func (u *SubscriptionPlanUpsertBulk) SetCredits(v int64) *SubscriptionPlanUpsertBulk {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.SetCredits(v)
+	})
+}
+
+// AddCredits adds v to the "credits" field.
+func (u *SubscriptionPlanUpsertBulk) AddCredits(v int64) *SubscriptionPlanUpsertBulk {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.AddCredits(v)
+	})
+}
+
+// UpdateCredits sets the "credits" field to the value that was provided on create.
+func (u *SubscriptionPlanUpsertBulk) UpdateCredits() *SubscriptionPlanUpsertBulk {
+	return u.Update(func(s *SubscriptionPlanUpsert) {
+		s.UpdateCredits()
 	})
 }
 

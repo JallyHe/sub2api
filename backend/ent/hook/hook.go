@@ -141,6 +141,18 @@ func (f ChannelMonitorRequestTemplateFunc) Mutate(ctx context.Context, m ent.Mut
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ChannelMonitorRequestTemplateMutation", m)
 }
 
+// The CreditLedgerFunc type is an adapter to allow the use of ordinary
+// function as CreditLedger mutator.
+type CreditLedgerFunc func(context.Context, *ent.CreditLedgerMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CreditLedgerFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CreditLedgerMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CreditLedgerMutation", m)
+}
+
 // The ErrorPassthroughRuleFunc type is an adapter to allow the use of ordinary
 // function as ErrorPassthroughRule mutator.
 type ErrorPassthroughRuleFunc func(context.Context, *ent.ErrorPassthroughRuleMutation) (ent.Value, error)
@@ -187,6 +199,18 @@ func (f IdentityAdoptionDecisionFunc) Mutate(ctx context.Context, m ent.Mutation
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.IdentityAdoptionDecisionMutation", m)
+}
+
+// The ModelCreditRateFunc type is an adapter to allow the use of ordinary
+// function as ModelCreditRate mutator.
+type ModelCreditRateFunc func(context.Context, *ent.ModelCreditRateMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ModelCreditRateFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ModelCreditRateMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ModelCreditRateMutation", m)
 }
 
 // The PaymentAuditLogFunc type is an adapter to allow the use of ordinary

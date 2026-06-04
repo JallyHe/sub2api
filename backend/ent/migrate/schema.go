@@ -596,6 +596,35 @@ var (
 			},
 		},
 	}
+	// CreditLedgerColumns holds the columns for the "credit_ledger" table.
+	CreditLedgerColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "user_id", Type: field.TypeInt64},
+		{Name: "delta", Type: field.TypeInt64},
+		{Name: "reason", Type: field.TypeString, Size: 50},
+		{Name: "ref_id", Type: field.TypeString, Nullable: true, Size: 100},
+		{Name: "balance_after", Type: field.TypeInt64},
+		{Name: "model", Type: field.TypeString, Nullable: true, Size: 100},
+		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"postgres": "timestamptz"}},
+	}
+	// CreditLedgerTable holds the schema information for the "credit_ledger" table.
+	CreditLedgerTable = &schema.Table{
+		Name:       "credit_ledger",
+		Columns:    CreditLedgerColumns,
+		PrimaryKey: []*schema.Column{CreditLedgerColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "creditledger_user_id_created_at",
+				Unique:  false,
+				Columns: []*schema.Column{CreditLedgerColumns[1], CreditLedgerColumns[7]},
+			},
+			{
+				Name:    "creditledger_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{CreditLedgerColumns[1]},
+			},
+		},
+	}
 	// ErrorPassthroughRulesColumns holds the columns for the "error_passthrough_rules" table.
 	ErrorPassthroughRulesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
@@ -788,6 +817,29 @@ var (
 				Name:    "identityadoptiondecision_identity_id",
 				Unique:  false,
 				Columns: []*schema.Column{IdentityAdoptionDecisionsColumns[6]},
+			},
+		},
+	}
+	// ModelCreditRatesColumns holds the columns for the "model_credit_rates" table.
+	ModelCreditRatesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "model_pattern", Type: field.TypeString, Size: 200},
+		{Name: "credits_per_1k_tokens_input", Type: field.TypeInt64, Default: 1},
+		{Name: "credits_per_1k_tokens_output", Type: field.TypeInt64, Default: 3},
+		{Name: "priority", Type: field.TypeInt, Default: 0},
+		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"postgres": "timestamptz"}},
+		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"postgres": "timestamptz"}},
+	}
+	// ModelCreditRatesTable holds the schema information for the "model_credit_rates" table.
+	ModelCreditRatesTable = &schema.Table{
+		Name:       "model_credit_rates",
+		Columns:    ModelCreditRatesColumns,
+		PrimaryKey: []*schema.Column{ModelCreditRatesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "modelcreditrate_priority",
+				Unique:  false,
+				Columns: []*schema.Column{ModelCreditRatesColumns[4]},
 			},
 		},
 	}
@@ -1221,6 +1273,7 @@ var (
 		{Name: "product_name", Type: field.TypeString, Size: 100, Default: ""},
 		{Name: "for_sale", Type: field.TypeBool, Default: true},
 		{Name: "sort_order", Type: field.TypeInt, Default: 0},
+		{Name: "credits", Type: field.TypeInt64, Default: 0},
 		{Name: "created_at", Type: field.TypeTime, SchemaType: map[string]string{"postgres": "timestamptz"}},
 		{Name: "updated_at", Type: field.TypeTime, SchemaType: map[string]string{"postgres": "timestamptz"}},
 	}
@@ -1475,6 +1528,9 @@ var (
 		{Name: "balance_notify_extra_emails", Type: field.TypeString, Default: "[]", SchemaType: map[string]string{"postgres": "text"}},
 		{Name: "total_recharged", Type: field.TypeFloat64, Default: 0, SchemaType: map[string]string{"postgres": "decimal(20,8)"}},
 		{Name: "rpm_limit", Type: field.TypeInt, Default: 0},
+		{Name: "credit_balance", Type: field.TypeInt64, Default: 0},
+		{Name: "credit_expires_at", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{"postgres": "timestamptz"}},
+		{Name: "credit_plan_id", Type: field.TypeInt64, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -1762,10 +1818,12 @@ var (
 		ChannelMonitorDailyRollupsTable,
 		ChannelMonitorHistoriesTable,
 		ChannelMonitorRequestTemplatesTable,
+		CreditLedgerTable,
 		ErrorPassthroughRulesTable,
 		GroupsTable,
 		IdempotencyRecordsTable,
 		IdentityAdoptionDecisionsTable,
+		ModelCreditRatesTable,
 		PaymentAuditLogsTable,
 		PaymentOrdersTable,
 		PaymentProviderInstancesTable,
@@ -1835,6 +1893,9 @@ func init() {
 	ChannelMonitorRequestTemplatesTable.Annotation = &entsql.Annotation{
 		Table: "channel_monitor_request_templates",
 	}
+	CreditLedgerTable.Annotation = &entsql.Annotation{
+		Table: "credit_ledger",
+	}
 	ErrorPassthroughRulesTable.Annotation = &entsql.Annotation{
 		Table: "error_passthrough_rules",
 	}
@@ -1848,6 +1909,9 @@ func init() {
 	IdentityAdoptionDecisionsTable.ForeignKeys[1].RefTable = PendingAuthSessionsTable
 	IdentityAdoptionDecisionsTable.Annotation = &entsql.Annotation{
 		Table: "identity_adoption_decisions",
+	}
+	ModelCreditRatesTable.Annotation = &entsql.Annotation{
+		Table: "model_credit_rates",
 	}
 	PaymentAuditLogsTable.Annotation = &entsql.Annotation{
 		Table: "payment_audit_logs",

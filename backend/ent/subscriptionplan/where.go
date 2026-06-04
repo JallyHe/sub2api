@@ -109,6 +109,11 @@ func SortOrder(v int) predicate.SubscriptionPlan {
 	return predicate.SubscriptionPlan(sql.FieldEQ(FieldSortOrder, v))
 }
 
+// Credits applies equality check predicate on the "credits" field. It's identical to CreditsEQ.
+func Credits(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldEQ(FieldCredits, v))
+}
+
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.SubscriptionPlan {
 	return predicate.SubscriptionPlan(sql.FieldEQ(FieldCreatedAt, v))
@@ -662,6 +667,46 @@ func SortOrderLT(v int) predicate.SubscriptionPlan {
 // SortOrderLTE applies the LTE predicate on the "sort_order" field.
 func SortOrderLTE(v int) predicate.SubscriptionPlan {
 	return predicate.SubscriptionPlan(sql.FieldLTE(FieldSortOrder, v))
+}
+
+// CreditsEQ applies the EQ predicate on the "credits" field.
+func CreditsEQ(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldEQ(FieldCredits, v))
+}
+
+// CreditsNEQ applies the NEQ predicate on the "credits" field.
+func CreditsNEQ(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldNEQ(FieldCredits, v))
+}
+
+// CreditsIn applies the In predicate on the "credits" field.
+func CreditsIn(vs ...int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldIn(FieldCredits, vs...))
+}
+
+// CreditsNotIn applies the NotIn predicate on the "credits" field.
+func CreditsNotIn(vs ...int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldNotIn(FieldCredits, vs...))
+}
+
+// CreditsGT applies the GT predicate on the "credits" field.
+func CreditsGT(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldGT(FieldCredits, v))
+}
+
+// CreditsGTE applies the GTE predicate on the "credits" field.
+func CreditsGTE(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldGTE(FieldCredits, v))
+}
+
+// CreditsLT applies the LT predicate on the "credits" field.
+func CreditsLT(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldLT(FieldCredits, v))
+}
+
+// CreditsLTE applies the LTE predicate on the "credits" field.
+func CreditsLTE(v int64) predicate.SubscriptionPlan {
+	return predicate.SubscriptionPlan(sql.FieldLTE(FieldCredits, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
