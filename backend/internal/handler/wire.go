@@ -115,6 +115,7 @@ func ProvideHandlers(
 	availableChannelHandler *AvailableChannelHandler,
 	creditHandler *CreditHandler,
 	clientHandler *ClientHandler,
+	clientAuthHandler *ClientAuthHandler,
 	_ *service.IdempotencyCoordinator,
 	_ *service.IdempotencyCleanupService,
 ) *Handlers {
@@ -137,6 +138,7 @@ func ProvideHandlers(
 		AvailableChannel: availableChannelHandler,
 		Credit:           creditHandler,
 		Client:           clientHandler,
+		ClientAuth:       clientAuthHandler,
 	}
 }
 
@@ -195,6 +197,7 @@ var ProviderSet = wire.NewSet(
 	// Credit + Client handlers
 	NewCreditHandler,
 	NewClientHandler,
+	NewClientAuthHandler,
 
 	// AdminHandlers and Handlers constructors
 	ProvideAdminHandlers,

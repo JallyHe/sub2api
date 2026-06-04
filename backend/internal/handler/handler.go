@@ -59,6 +59,7 @@ type Handlers struct {
 	AvailableChannel *AvailableChannelHandler
 	Credit           *CreditHandler
 	Client           *ClientHandler
+	ClientAuth       *ClientAuthHandler
 }
 
 // BuildInfo contains build-time information

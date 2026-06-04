@@ -182,7 +182,16 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/public/LandingView.vue'),
     meta: {
       requiresAuth: false,
-      title: 'Sub2API — AI API 中转订阅平台'
+      title: 'StoryClaw — AI 驱动的剧本创作工具'
+    }
+  },
+  {
+    path: '/portal',
+    name: 'Portal',
+    component: () => import('@/views/public/PortalView.vue'),
+    meta: {
+      requiresAuth: false,  // handles auth check internally
+      title: 'StoryClaw — 我的账户'
     }
   },
 
@@ -718,7 +727,7 @@ let authInitialized = false
 const navigationLoading = useNavigationLoadingState()
 // 延迟初始化预加载，传入 router 实例
 let routePrefetch: ReturnType<typeof useRoutePrefetch> | null = null
-const BACKEND_MODE_ALLOWED_PATHS = ['/', '/login', '/key-usage', '/setup', '/payment/result', '/payment/airwallex', '/legal']
+const BACKEND_MODE_ALLOWED_PATHS = ['/', '/portal', '/login', '/key-usage', '/setup', '/payment/result', '/payment/airwallex', '/legal']
 const BACKEND_MODE_CALLBACK_PATHS = [
   '/auth/callback',
   '/auth/linuxdo/callback',
